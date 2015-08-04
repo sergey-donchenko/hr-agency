@@ -1,0 +1,6 @@
+1. ./artisan migrate:make create_category_table --create=categories
+2. app/database/migrations => создается новый файл, этот файл должен быть приведен к требованиям
+3. ./artisan migrate  - Выполняем миграции
+4. Создать МОДЕЛЬ для категории ==> все модели хранятся в папке app/models
+5. Создаем СИИД файл == app/database/seed
+6. Выполняем сидер ./artisan db:seed
