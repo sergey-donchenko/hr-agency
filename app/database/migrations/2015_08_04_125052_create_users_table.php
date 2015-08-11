@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->char('is_admin',1)->default(0);
 			$table->string('phone',255)->nullable();
 			$table->string('city',255)->nullable();
+			$table->string('remember_token',255)->nullable();
 
 			$table->timestamps();
 			$table->softDeletes();

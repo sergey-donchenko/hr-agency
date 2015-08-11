@@ -32,6 +32,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	    'email'=>'required|email|unique:users',
 	    'password'=>'required|alpha_num|between:6,12|confirmed',
 	    'password_confirmation'=>'required|alpha_num|between:6,12'
+	    
     );
+
+	/**
+	*
+	*
+	*/
+	public static $rul = array();
+
+	/**
+	 * The attributes excluded from the change password form.
+	 *
+	 * @var array
+	 */
+	public static $change_pass = array(
+	    'password'=>'required|alpha_num|between:6,12|confirmed',
+	    'password_confirmation'=>'required|alpha_num|between:6,12'
+	);
 
 }

@@ -14,21 +14,21 @@ class UsersTableSeeder extends Seeder {
 		DB::table('users')->delete();
 
         User::create(array(
-        		'name' => 'Max', 
+        	    'name' => 'Max', 
         	   'email' => 'makss_18@mail.ru',
         	'password' => Hash::make('max12345678'),
         	'is_admin' => '1',
         	   'phone' => '0932634329',
-        		'city' => 'Pervomaisk',
+        	    'city' => 'Pervomaisk',
 
         ));
 
         User::create(array(
-        		'name' => 'Vasiliy', 
+        	    'name' => 'Vasiliy', 
         	   'email' => 'vasuy@mail.ru',
-        	'password' => Hash::make('678'),
+        	'password' => Hash::make('12345678'),
         	   'phone' => '0995648955',
-        		'city' => 'Vradievka',
+        	    'city' => 'Vradievka',
 
         ));
                

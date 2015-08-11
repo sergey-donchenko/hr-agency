@@ -28,7 +28,7 @@ class UserController extends \BaseController {
 		$aParams = Input::all();
 		
 		if ( Auth::attempt(array('email' => $aParams['email'], 'password' => $aParams['password'] )) ) {
-	    	return Redirect::route('user-dashboard')->with('message', 'You are now logged in!');
+	    	return Redirect::route('user-dashboard')->with('message', 'You are now logged!');
 		} else {			
     		return Redirect::route('login-link')
         		->with('message', 'Your username/password combination was incorrect')
@@ -54,7 +54,7 @@ class UserController extends \BaseController {
 	{
 		return View::make('user/registr');
 	}
- 	
+	 	
  	/**
      * Method to render the validation FORM
     */
@@ -81,6 +81,7 @@ class UserController extends \BaseController {
 	    		->withInput();    
     	}    
 	}
+	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -88,9 +89,28 @@ class UserController extends \BaseController {
 	 */
 	public function dashboard()
 	{
-		die('Dashboard!!!!');
+		return View::make('user/dashboard');
 	}
 	
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function listItems()
+	{
+		$currUser = Auth::user();
+		$oUsers   = User::all();
+		$oUser    = null; 
+		if ( $currUser->is_admin == 0 ){
+			return Redirect::route('user-edit', array(
+				'id' => $currUser->id
+			));
+
+		}
+		return View::make('/user/list', array('aUsers' => $oUsers));
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -100,6 +120,12 @@ class UserController extends \BaseController {
 	{
 		//
 	}
+	
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
 
 
 	/**
@@ -131,11 +157,143 @@ class UserController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($id = NULL)
 	{
-		//
+		$currUser = Auth::user();
+		$oUser    = null;
+		if ( $currUser->is_admin == 0 && $id != $currUser->id){
+			return Redirect::route('user-edit', array(
+				'id' => $currUser->id
+			));
+
+		}
+		if ($id > 0 ){
+			$oUser = User::find($id);
+		}
+		return View::make('/user/edit', array(
+			'oUser' => $oUser,
+			'id'    => $id ));
 	}
 
+	/**
+	 * Show the form for Chang_Password the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function change_pass($id = NULL)
+	{
+		$currUser = Auth::user();
+		$oUser    = null; 
+		if ( $currUser->is_admin == 0 && $id != $currUser->id){
+			return Redirect::route('user-change_pass', array(
+				'id' => $currUser->id
+			));
+		}
+		if ($id > 0 ){
+			$oUser = User::find($id);
+		}
+		return View::make('/user/change_pass', array( 'oUser' => $oUser,'id' => $id ));
+	}
+
+	/**
+	 * Show the form for doChang_Password the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function doChange_pass()
+	{
+		$validator = Validator::make(Input::all(), User::$change_pass);
+ 		
+ 		if ($validator->passes()) {
+ 			$id = Input::get('id');
+ 			if ( isset($id) && $id > 0 ) {
+ 				$user = User::find($id);
+ 			} 	
+		    $user->password = Hash::make(Input::get('password'));
+		    $user->save();
+
+		    return Redirect::route('user-change_pass')
+    			->with('message', 'Password was changed successfully.');   
+		} else {
+			return Redirect::route('user-change_pass')
+    			->with('message', 'The following errors occurred')
+	    		->withErrors($validator)
+	    		->withInput();    
+			}
+	}
+
+	/**
+	 * Show the form for doSave the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function doSave()
+	{
+		$validator = Validator::make(Input::all(), User::$rul);
+ 		
+ 		if ($validator->passes()) {
+ 			$id = Input::get('id');
+ 			if ( isset($id) && $id > 0 ) {
+ 				$user = User::find($id);
+ 			} else {
+ 				$user = new User;
+ 			}	
+
+		    $user->name  = Input::get('name');
+		    $user->city  = Input::get('city');
+		    $user->phone = Input::get('phone');
+
+		    $user->save();
+
+		    return Redirect::route('user-dashboard')
+    			->with('message', 'User was changed successfully.');   
+		} else {
+			return Redirect::route('user-dashboard')
+    			->with('message', 'The following errors occurred')
+	    		->withErrors($validator)
+	    		->withInput();    
+			
+		}
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function delete($id=NULL)
+	{
+		return View::make('/common/delete', array(
+			'id' => $id,
+			'url' => URL::route('user-delete-post'),
+			'message' => 'Вы дейсвительно хотите удалить?',
+			'backMessage' => 'Go to User List',
+			'backUrl' => URL::route('user-list'),
+		));
+	}
+
+/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function doDelete()
+	{
+		$aData=Input::all();	
+		if (isset($aData['id'])) 
+		{
+			$user = User::find($aData['id']);
+			$user->delete();
+
+			return Redirect::route('user-dashboard')
+        		->with('message', 'Пользователь успешно удален');
+		}
+		return Redirect::route('user-list')
+        		->with('message', 'Произошла ошибка удаления');
+	}
 
 	/**
 	 * Update the specified resource in storage.

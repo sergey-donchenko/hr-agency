@@ -1,12 +1,47 @@
 @extends('layouts.default')
 
 @section('content')
-<ul>
+
+	<table border="1">
 	@forelse($aCategories as $category)
-	    <li>{{ $category->name }} ==> {{ $category->description }} </li>
+		
+		<tr>
+			<td>
+				{{ $category->name }}
+			</td>
+			<td>
+				{{ $category->description }}
+			</td>
+		</tr>
 	@empty
-	    <li>Нет категорий</li>
+		<tr>
+			<td colspan='4'>Нет категорий</td>
+		</tr>
 	@endforelse
 
-</ul>
+	</table>
+	<hr>
+	<table border="1">
+	
+	@forelse($aVacancies as $vacancy)
+		
+		<tr>
+			<td>
+				{{ $vacancy->title }}
+			</td>
+			<td>
+				{{ $vacancy->description }}
+			</td>
+			<td>
+				{{ $vacancy->city }}
+			</td>
+		</tr>
+	@empty
+		<tr>
+			<td colspan='4'>Нет категорий</td>
+		</tr>
+	@endforelse
+
+	</table>
+
 @stop

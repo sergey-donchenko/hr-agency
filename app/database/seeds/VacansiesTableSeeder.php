@@ -1,6 +1,6 @@
 <?php
 
-class VacansiesTableSeeder extends Seeder {
+class VacanciesTableSeeder extends Seeder {
 
 	/**
 	 * Run the database seeds.

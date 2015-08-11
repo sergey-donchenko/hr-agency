@@ -17,9 +17,13 @@ class HomeController extends BaseController {
 
 	public function home()
 	{				
-		$aCateories = Category::all();		
+		$aCategories = Category::all();		
+		
+		$aVacancies = Vacancy::all();
 
-		return View::make('home/index', array('aCategories' => $aCateories));
+		return View::make('home/index', array('aCategories' => $aCategories, 'aVacancies' => $aVacancies));
+				
 	}
+
 
 }

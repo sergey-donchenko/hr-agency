@@ -13,12 +13,14 @@
 				<li>{{ HTML::link( URL::route('login-link'), 'Login') }}</li>
 				<li>{{ HTML::link( URL::route('registr'), 'Registr') }}</li>
 			@else
+                <li>{{ HTML::link( URL::route('user-dashboard'), 'Dashboard') }}</li>
                 <li>{{ HTML::link( URL::route('logout'), 'Logout') }}</li>
+                <li>You are logged in as {{ Auth::user()->name }}</li>
             @endif	
 		</ul>
 	</div>	
 
-	<h1>You have TESTY arrived.</h1>		
+	<h1>Work.local</h1>		
 
 	<!-- Content section -->        
 	<div class="container">
