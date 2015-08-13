@@ -56,7 +56,7 @@ class UserController extends \BaseController {
 	}
 	 	
  	/**
-     * Method to render the validation FORM
+     * Method to render the doRegistr FORM
     */
  	public function doRegistr() {
     	$validator = Validator::make(Input::all(), User::$rules);
@@ -83,7 +83,7 @@ class UserController extends \BaseController {
 	}
 	
 	/**
-	 * Show the form for creating a new resource.
+	 * Show the form for dashboard.
 	 *
 	 * @return Response
 	 */
@@ -122,13 +122,6 @@ class UserController extends \BaseController {
 	}
 	
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -137,7 +130,6 @@ class UserController extends \BaseController {
 	{
 		//
 	}
-
 
 	/**
 	 * Display the specified resource.
@@ -260,26 +252,28 @@ class UserController extends \BaseController {
 	}
 
 	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+	* Show the form for delete the specified resource.
+	*
+	* @param  int  $id
+	* @return Response
+	*/
 	public function delete($id=NULL)
 	{
 		return View::make('/common/delete', array(
-			'id' => $id,
-			'url' => URL::route('user-delete-post'),
-			'message' => 'Вы дейсвительно хотите удалить?',
+			'id'  		  => $id,
+			'url' 		  => URL::route('user-delete-post'),
+			'message' 	  => 'Вы дейсвительно хотите удалить?',
 			'backMessage' => 'Go to User List',
-			'backUrl' => URL::route('user-list'),
+			'backUrl' 	  => URL::route('user-list'),
 		));
 	}
 
-/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+	/**
+	* Show the form for doDelete the specified resource.
+	*
+	* @param  int  $id
+	* @return Response
+	*/
 	public function doDelete()
 	{
 		$aData=Input::all();	

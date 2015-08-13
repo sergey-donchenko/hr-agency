@@ -2,14 +2,16 @@
 
 @section('content')
 
-	{{ HTML::link( URL::route('category-new'),'Add new category') }}
+	{{ HTML::link( URL::route('category-new'), Auth::user()->is_admin == 1 ? 'Add new category' : '') }}
 	<table border="1">
 		<tr>
 			<th>id</th>
 			<th>name</th>
 			<th>description</th>
 			<th>parent_id</th>
-			<th>actions</th>
+			@if (Auth::user()->is_admin == 1)
+			<th>action</th>
+			@endif
 		</tr>
 
 	@forelse($aCategories as $category)
@@ -26,10 +28,12 @@
 		    </td>
 		    <td>{{ $category->parent_id }}
 		    </td>
+		    @if (Auth::user()->is_admin == 1)
 		    <td>
-				{{ HTML::link( URL::route('category-edit', array('id'=>$category->id)),'Edit') }}
-				{{ HTML::link( URL::route('category-delete', array('id'=>$category->id)),'Delete') }}
+				{{ HTML::link( URL::route('category-edit'), 'Edit') }}
+				{{ HTML::link( URL::route('category-delete'), 'Delete' ) }}
 			</td>
+			@endif
 		</tr>
 	@empty
 	    <tr>

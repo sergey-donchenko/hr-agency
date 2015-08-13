@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVacanciesTable extends Migration {
+class CreateVacansiesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -19,14 +19,17 @@ class CreateVacanciesTable extends Migration {
 			$table->text('description');
 			$table->string('city', 255);
 			$table->integer('category_id')->unsigned();
+			
 			$table->date('dt_add');
-
+			
 			$table->timestamps();
 			$table->softDeletes();
 
 			$table->foreign('category_id', 'vacancy_category_foreign_key')
-			    ->references('id')->on('categories')
-			    ->onDelete('cascade');
+				  ->references('id')->on('categories')
+				  ->onDelete('cascade');
+			
+			
 		});
 	}
 

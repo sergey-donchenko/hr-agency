@@ -2,14 +2,16 @@
 
 @section('content')
 
-	{{ HTML::link( URL::route('vacancy-new'),'Add new vacancy') }}
+	{{ HTML::link( URL::route('vacancy-new'), Auth::user()->is_admin == 1 ? 'Add new vacancy' : '') }}
 	<table  border="1">
 		<tr>
 			<th>id</th>
 			<th>name</th>
 			<th>description</th>
 			<th>city</th>
-			<th>actions</th>
+		@if (Auth::user()->is_admin == 1)
+			<th>action</th>
+		@endif
 		</tr>
 	@forelse($aVacancies as $vacancy)
 		<tr>
@@ -25,10 +27,15 @@
 			<td>
 				{{ $vacancy->city }}
 			</td>
+		@if (Auth::user()->is_admin == 1)
 			<td>
-				{{ HTML::link( URL::route('vacancy-edit', array('id'=>$vacancy->id)),'Edit') }}
-				{{ HTML::link( URL::route('vacancy-delete', array('id'=>$vacancy->id)),'Delete', array('class' => 'delete-item', 'attr-id' => $vacancy->id)) }}
+				{{ HTML::link( URL::route('vacancy-edit'), 'Edit' ) }}
+				{{ HTML::link( URL::route('vacancy-delete', 
+				array('id'=>$vacancy->id)), 'Delete', 
+				array('class' => 'delete-item', 
+					'attr-id' => $vacancy->id)) }}
 			</td>
+		@endif
 		</tr>
 	@empty
 	    <tr>

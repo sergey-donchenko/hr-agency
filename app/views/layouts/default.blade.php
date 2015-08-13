@@ -15,9 +15,13 @@
 			@else
                 <li>{{ HTML::link( URL::route('user-dashboard'), 'Dashboard') }}</li>
                 <li>{{ HTML::link( URL::route('logout'), 'Logout') }}</li>
-                <li>You are logged in as {{ Auth::user()->name }}</li>
-            @endif	
 		</ul>
+		<ul>
+			<li>
+				<h3>You are logged in as {{ Auth::user()->name }}</h3>
+			</li>
+		</ul>
+            @endif	
 	</div>	
 
 	<h1>Work.local</h1>		

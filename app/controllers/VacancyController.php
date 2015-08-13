@@ -24,7 +24,7 @@ class VacancyController extends \BaseController {
 		return View::make('/vacancy/list', array('aVacancies' => $aVacancies));
 	}
 
-/**
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -45,12 +45,12 @@ class VacancyController extends \BaseController {
 
 		return View::make('/vacancy/edit', array(
 			'aCategories'=> $aCategories,
-			'oVacancy' => $oVacancy,
-			'id' => $id
+			'oVacancy'	 => $oVacancy,
+			'id' 		 => $id
 		));
 	}
 
-/**
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -87,7 +87,7 @@ class VacancyController extends \BaseController {
 		}
 	}
 
-/**
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
@@ -95,15 +95,15 @@ class VacancyController extends \BaseController {
 	public function delete($id=NULL)
 	{
 		return View::make('/common/delete', array(
-			'id' => $id,
-			'url' => URL::route('vacancy-delete-post'),
-			'message' => 'Вы дейсвительно хотите удалить?',
+			'id' 	      => $id,
+			'url' 		  => URL::route('vacancy-delete-post'),
+			'message' 	  => 'Вы дейсвительно хотите удалить?',
 			'backMessage' => 'Go to Vacancies List',
-			'backUrl' => URL::route('vacancy-list'),
+			'backUrl' 	  => URL::route('vacancy-list'),
 		));
 	}
 
-/**
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
@@ -132,7 +132,6 @@ class VacancyController extends \BaseController {
 	{
 		//
 	}
-
 
 	/**
 	 * Store a newly created resource in storage.

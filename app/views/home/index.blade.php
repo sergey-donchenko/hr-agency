@@ -15,7 +15,7 @@
 		</tr>
 	@empty
 		<tr>
-			<td colspan='4'>Нет категорий</td>
+			<td colspan='4'>No category</td>
 		</tr>
 	@endforelse
 
@@ -38,7 +38,7 @@
 		</tr>
 	@empty
 		<tr>
-			<td colspan='4'>Нет категорий</td>
+			<td colspan='4'>No vacancy</td>
 		</tr>
 	@endforelse
 
