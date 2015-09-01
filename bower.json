@@ -1,0 +1,19 @@
+{
+  "name": "work.local",
+  "version": "1.0.0",
+  "homepage": "https://github.com/sergey-donchenko/hr-agency",
+  "authors": [
+    "Yurkovskiy Maksim Igorevich <makss_18@mail.ru>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "^3.3.1"
+  }
+}
