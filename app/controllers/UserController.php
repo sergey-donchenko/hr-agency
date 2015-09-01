@@ -13,7 +13,7 @@ class UserController extends \BaseController {
 	}
 
     /**
-     * Method to render the login FORM
+     * Method to render the GEt login FORM
     */
 	public function login()
 	{
@@ -21,14 +21,17 @@ class UserController extends \BaseController {
 	}
  	
  	/**
-     * Method to render the doLogin FORM
+     * Method to render the POST doLogin FORM
     */
 	public function doLogin() 
 	{
 		$aParams = Input::all();
 		
-		if ( Auth::attempt(array('email' => $aParams['email'], 'password' => $aParams['password'] )) ) {
-	    	return Redirect::route('user-dashboard')->with('message', 'You are now logged!');
+		if ( Auth::attempt(array(
+			'email' 	=> $aParams['email'],
+			'password'  => $aParams['password'] )) ) {
+	    	return Redirect::route('user-dashboard')
+	    		->with('message', 'You are now logged!');
 		} else {			
     		return Redirect::route('login-link')
         		->with('message', 'Your username/password combination was incorrect')
@@ -48,7 +51,7 @@ class UserController extends \BaseController {
 	}
 	
 	/**
-     * Method to render the register FORM
+     * Method to render the GET register FORM
     */
 	public function registr()
 	{
@@ -56,7 +59,7 @@ class UserController extends \BaseController {
 	}
 	 	
  	/**
-     * Method to render the doRegistr FORM
+     * Method to render the POST doRegistr FORM
     */
  	public function doRegistr() {
     	$validator = Validator::make(Input::all(), User::$rules);
@@ -100,15 +103,18 @@ class UserController extends \BaseController {
 	public function listItems()
 	{
 		$currUser = Auth::user();
-		$oUsers   = User::all();
 		$oUser    = null; 
+
 		if ( $currUser->is_admin == 0 ){
 			return Redirect::route('user-edit', array(
 				'id' => $currUser->id
 			));
-
-		}
-		return View::make('/user/list', array('aUsers' => $oUsers));
+		} else {
+		$oUsers = User::paginate(10);
+	}
+		return View::make('/user/list', array(
+			'aUsers' => $oUsers
+			));
 	}
 
 	/**
@@ -168,7 +174,7 @@ class UserController extends \BaseController {
 	}
 
 	/**
-	 * Show the form for Chang_Password the specified resource.
+	 * Show the GET form for Chang_Password the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -185,11 +191,14 @@ class UserController extends \BaseController {
 		if ($id > 0 ){
 			$oUser = User::find($id);
 		}
-		return View::make('/user/change_pass', array( 'oUser' => $oUser,'id' => $id ));
+		return View::make('/user/change_pass', array(
+			'oUser'  => $oUser,
+			'id'	 => $id 
+			));
 	}
 
 	/**
-	 * Show the form for doChang_Password the specified resource.
+	 * Show the form POST for doChang_Password the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -217,7 +226,7 @@ class UserController extends \BaseController {
 	}
 
 	/**
-	 * Show the form for doSave the specified resource.
+	 * Show the POST form for doSave the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -252,7 +261,7 @@ class UserController extends \BaseController {
 	}
 
 	/**
-	* Show the form for delete the specified resource.
+	* Show the GET form for delete the specified resource.
 	*
 	* @param  int  $id
 	* @return Response
@@ -269,7 +278,7 @@ class UserController extends \BaseController {
 	}
 
 	/**
-	* Show the form for doDelete the specified resource.
+	* Show the POST form for doDelete the specified resource.
 	*
 	* @param  int  $id
 	* @return Response

@@ -14,9 +14,25 @@
 		</li>
 	</ul>
 	<ul>
-		<li>This static list</li>
 		<li>
 			{{ HTML::link( URL::route('page-list'), 'Static') }}
 		</li>
+		<li>
+			{{ HTML::link( URL::route('company-list'), 'Companies') }}
+		</li>
+		<li>
+			{{ HTML::link( URL::route('blog-list'), 'Blog') }}
+		</li>
+		@if (Auth::user()->is_admin == 1)
+		<li>
+			{{ HTML::link( URL::route('country-list'), 'Country') }}
+		</li>
+		<li>
+			{{ HTML::link( URL::route('region-list'), 'Region') }}
+		</li>
+		<li>
+			{{ HTML::link( URL::route('city-list'), 'City') }}
+		</li>
+		@endif
 	</ul>
 @stop

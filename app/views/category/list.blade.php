@@ -2,45 +2,55 @@
 
 @section('content')
 
-	{{ HTML::link( URL::route('category-new'), Auth::user()->is_admin == 1 ? 'Add new category' : '') }}
-	<table border="1">
-		<tr>
-			<th>id</th>
-			<th>name</th>
-			<th>description</th>
-			<th>parent_id</th>
-			@if (Auth::user()->is_admin == 1)
-			<th>action</th>
-			@endif
-		</tr>
-
-	@forelse($aCategories as $category)
-
-		<tr>
-		    <td>
-		    	{{ $category->id }} 
-		    </td>
-		    <td>
-		    	{{ $category->name }}
-		    </td>
-		    <td>
-		    	{{ $category->description }}
-		    </td>
-		    <td>{{ $category->parent_id }}
-		    </td>
-		    @if (Auth::user()->is_admin == 1)
-		    <td>
-				{{ HTML::link( URL::route('category-edit'), 'Edit') }}
-				{{ HTML::link( URL::route('category-delete'), 'Delete' ) }}
-			</td>
-			@endif
-		</tr>
-	@empty
-	    <tr>
-	    	<td colspan='4'>Нет категорий</td>
-	    </tr>
-	@endforelse
-
-	</table>
-
+	{{ HTML::link( URL::route('category-new'), 'Add new category', array('class' => 'btn btn-default btn-in-toolbar')) }}
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">Categories</div>
+		<div class="panel-body"></div>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>User Name</th>
+					<th>action</th>
+				</tr>
+			</thead>
+		@forelse($aCategories as $category)
+			<tbody>
+				<tr>
+				    <td>
+				    	{{ $category->id }} 
+				    </td>
+				    <td>
+				    	<b>{{ $category->name }}</b>
+				    </td>
+				    <td>
+				    	{{ $category->description }}
+				    </td>
+				    <td>
+				    	{{ $category->user_name }}
+				    </td>
+				    <td>
+				    	<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="{{route('category-edit', array('id' => $category->id)) }}">Edit</a>
+									<a href="{{route('category-delete', array('id' => $category->id))}}">Delete</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				@empty
+	    		<tr>
+			    	<td colspan='4'>Нет категорий</td>
+			    </tr>
+				@endforelse
+			</tbody>
+		</table>
+	</div>
+	<div class="text-center"><?php echo $aCategories->links(); ?></div>
 @stop

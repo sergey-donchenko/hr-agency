@@ -19,9 +19,18 @@ class CategoryController extends \BaseController {
 	 */
 	public function listItems()
 	{
-		$aCateories = Category::all();
+		$oQuery = Category::join('users', 'users.id', '=', 'user_id')
+			->select ('categories.id as id',    
+				'categories.name', 
+				'categories.description',
+				'users.name as user_name'
+			);
 
-		return View::make('/category/list', array('aCategories' => $aCateories));
+		$aCategories = $oQuery->paginate(10);
+		
+		return View::make('/category/list', array(
+			'aCategories' => $aCategories
+		));
 	}
 
 	/**
@@ -59,23 +68,31 @@ class CategoryController extends \BaseController {
 
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * Show the GET form for editing the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function edit($id = NULL)
 	{
+		$currUser	 = Auth::user();
 		$oCategories = Category::all();
 		$oCategory   = null; 
 
 		$aCategories['0'] = 'Root Node';
+		
 		foreach( $oCategories as $item ) {
 			$aCategories[$item->id] = $item->name;
 		}		
 		
 		if ( $id > 0 ) {
 			$oCategory = Category::find( $id );
+		}
+
+		if ($currUser->is_admin == 0 && (empty($oCategory) === false && $oCategory->user_id != $currUser->id)){
+			return Redirect::route('category-list', array(
+				'user_id' => $currUser->id
+			));
 		}
 
 		return View::make('/category/edit', array(
@@ -86,7 +103,7 @@ class CategoryController extends \BaseController {
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * Show the POST form for editing the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -104,10 +121,11 @@ class CategoryController extends \BaseController {
  				$category = new Category;
  			}	
 
-		    $category->name    	  = Input::get('name');
-		    $category->description = Input::get('description');
-		    $category->parent_id = Input::get('category');
-		    
+		    $category->name 		= Input::get('name');
+		    $category->description  = Input::get('description');
+		    $category->parent_id 	= Input::get('category');
+   		    $category->user_id		= Auth::user()->id;
+
 		    $category->save();
 
 		    return Redirect::route('category-list')
@@ -122,12 +140,21 @@ class CategoryController extends \BaseController {
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Form for GET  delete the specified resource.
 	 *
 	 * @return Response
 	 */
 	public function delete($id=NULL)
 	{
+		$currUser  = Auth::user();
+		$aCategory = Category::find($id);
+
+		if ($currUser->is_admin == 0 && $aCategory->user_id != $currUser->id){
+			return Redirect::route('category-list', array(
+				'user_id' => $currUser->id
+			));
+		}
+
 		return View::make('/common/delete', array(
 			'id' => $id,
 			'url' => URL::route('category-delete-post'),
@@ -138,7 +165,7 @@ class CategoryController extends \BaseController {
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Form for POST  delete the specified resource.
 	 *
 	 * @return Response
 	 */

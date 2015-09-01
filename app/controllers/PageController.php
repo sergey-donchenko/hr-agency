@@ -16,7 +16,16 @@ class PageController extends \BaseController {
 	*/
 	public function listItem()
 	{
-		$aPage = StaticPage::all();
+		$currUser = Auth::user();
+
+		$oQuery = StaticPage::join('users', 'users.id', '=', 'user_id')
+			->select ('static_page.id as id',
+				'static_page.title',
+				'static_page.url',
+				'static_page.description',  
+				'users.name as user_name'
+			);
+		$aPage = $oQuery->paginate(10);
 
 		return View::make('/page/list', array(
 			'aPage'	 => $aPage));
@@ -42,12 +51,11 @@ class PageController extends \BaseController {
 	public function edit($id = NULL)
 	{
 		$currUser = Auth::user('name');
-		$aPage = StaticPage::find($id);
+		$aPage 	  = StaticPage::find($id);
 		$oPage    = null;
-		if ( $currUser->is_admin == 0 && $id != $currUser->id){
-			return Redirect::route('page-edit', array(
-				'user_id' => $currUser->id
-			));
+	
+		if ( $currUser->is_admin == 0){
+			return Redirect::route('page-list', array());
 		}
 		if ($id > 0 ){
 			$aPage = StaticPage::find($id);
@@ -59,7 +67,7 @@ class PageController extends \BaseController {
 	}
 	
 	/**
-	 * Form for save the specified resource.
+	 * POST Form for save the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -81,6 +89,7 @@ class PageController extends \BaseController {
 		    $page->title    	  	= Input::get('title');
 		    $page->meta_keywords 	= Input::get('meta_keywords');
 		    $page->meta_description = Input::get('meta_description');
+		    $page->url 				= Input::get('url');
 		    $page->description 		= Input::get('description');
 
 		    $page->save();
@@ -97,12 +106,18 @@ class PageController extends \BaseController {
 	}
 
 	/**
-	 * Form for delete the specified resource.
+	 * GET Form for delete the specified resource.
 	 *
 	 * @return Response
 	 */
 	public function delete($id=NULL)
 	{
+		$currUser = Auth::user();
+
+		if ($currUser->is_admin == 0) {
+			return Redirect::route('page-list', array());
+		}
+
 		return View::make('/common/delete', array(
 			'id' 		  => $id,
 			'url' 		  => URL::route('page-delete'),
@@ -113,7 +128,7 @@ class PageController extends \BaseController {
 	}
 
 	/**
-	 * Form for delete the specified resource.
+	 * POST Form for delete the specified resource.
 	 *
 	 * @return Response
 	 */
@@ -126,7 +141,7 @@ class PageController extends \BaseController {
 			$static_page->delete();
 
 			return Redirect::route('page-list')
-        		->with('message', 'Вакансия успешно удалена');
+        		->with('message', 'Static page removed');
 		}
 		return Redirect::route('page-list')
         		->with('message', 'Произошла ошибка удаления');

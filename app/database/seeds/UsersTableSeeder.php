@@ -15,12 +15,12 @@ class UsersTableSeeder extends Seeder {
 
                 User::create(array(
                         'id'       => 1,
-                        'name'     => 'Max',
-                        'email'    => 'makss_18@mail.ru',
-                        'password' => Hash::make('max12345678'),
+                        'name'     => 'Admin',
+                        'email'    => 'admin@work.local',
+                        'password' => Hash::make('admin123'),
                         'is_admin' => '1',
-                        'phone'    => '0932634329',
-                        'city'     => 'Pervomaisk',
+                        'phone'    => 'admin123',
+                        'city'     => 'admin123',
 
                 ));
 
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder {
                 	'name'     => 'Vasiliy', 
                 	'email'    => 'vasuy@mail.ru',
                 	'password' => Hash::make('12345678'),
-                	'phone'    => '012345678',
+                	'phone'    => '12345678',
                 	'city'     => 'Vradievka',
 
                 ));
